@@ -19,7 +19,12 @@ func (s *Server) SayHello(c context.Context, request *proto.HelloRequest) (*prot
 }
 
 func main() {
-	server := grpc.NewServer()
+	interceptor := func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+
+		return nil, nil
+	}
+	opt := grpc.UnaryInterceptor(interceptor)
+	server := grpc.NewServer(opt)
 	proto.RegisterGreeterServer(server, new(Server))
 
 	listen, err := net.Listen("tcp", ":8989")
