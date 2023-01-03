@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option go_package = "./;proto";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "base.proto";
+
+service Greeter {
+    rpc GetStream(StreamReqData) returns (stream StreamResData); // 服务端流模式
+    rpc PutStream(stream StreamReqData) returns (StreamResData); // 客户端流模式
+    rpc AllStream(stream StreamReqData) returns (stream StreamResData); // 双向流模式
+    rpc Ping(google.protobuf.Empty) returns (Pong);
+}
+
+message StreamReqData {
+    string data = 1;
+}
+
+message StreamResData {
+    string data = 1;
+
+    message Result {
+        string name = 1;
+        string url = 2;
+    }
+
+    repeated Result res = 2;
+    SexEnum sex = 3;
+
+    map<string, string> mp = 4;
+
+    google.protobuf.Timestamp addTime = 5;
+
+}
+
+message Pong {
+    string id = 1;
+}
